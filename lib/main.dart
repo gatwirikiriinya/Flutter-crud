@@ -90,6 +90,33 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+updateData() {
+    print("updated");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("MyStudents").doc(studentName);
+
+    Map<String, dynamic> students = {
+      "studentName": studentName,
+      "studentID": studentID,
+      "studyProgramID": studyProgramID,
+      "studentGPA": studentGPA
+    };
+    documentReference.set(students).whenComplete(() {
+      print("$studentName updated");
+    });
+  }
+
+  deleteData() {
+    print("deleted");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("MyStudents").doc(studentName);
+
+    documentReference.delete().whenComplete(() {
+      print("$studentName deleted");
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
