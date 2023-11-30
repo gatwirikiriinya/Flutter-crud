@@ -50,9 +50,71 @@ class _MyAppState extends State<MyApp> {
     studentGPA = double.tryParse(gpa) ?? 0.0;
   }
 
+  createData() {
+    print("created");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("MyStudents").doc(studentName);
 
+    Map<String, dynamic> students = {
+      "studentName": studentName,
+      "studentID": studentID,
+      "studyProgramID": studyProgramID,
+      "studentGPA": studentGPA
+    };
+    documentReference.set(students).whenComplete(() {
+      print("$studentName created");
+    });
+  }
 
+  readData() {
+    print("read");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("MyStudents").doc(studentName);
 
+    documentReference.get().then((datasnapshot) {
+      if (datasnapshot.exists) {
+        Map<String, dynamic>? data =
+            datasnapshot.data() as Map<String, dynamic>?;
+
+        if (data != null) {
+          print(data["studentName"]);
+          print(data["studentID"]);
+          print(data["studyProgramID"]);
+          print(data["studentGPA"]);
+        } else {
+          print("Data is null");
+        }
+      } else {
+        print("Document does not exist");
+      }
+    });
+  }
+
+  updateData() {
+    print("updated");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("MyStudents").doc(studentName);
+
+    Map<String, dynamic> students = {
+      "studentName": studentName,
+      "studentID": studentID,
+      "studyProgramID": studyProgramID,
+      "studentGPA": studentGPA
+    };
+    documentReference.set(students).whenComplete(() {
+      print("$studentName updated");
+    });
+  }
+
+  deleteData() {
+    print("deleted");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("MyStudents").doc(studentName);
+
+    documentReference.delete().whenComplete(() {
+      print("$studentName deleted");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
